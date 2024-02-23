@@ -12,6 +12,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ./discord-bot
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,7 +26,7 @@ jobs:
           go-version: '1.22.0' # Change this to your desired Go version
 
       - name: Install dependencies
-        run: cd ./discord-bot && go mod download
+        run: go mod download
 
       - name: Build
         run: go build
