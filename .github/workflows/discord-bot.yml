@@ -22,7 +22,7 @@ jobs:
           go-version: '1.22.0' # Change this to your desired Go version
 
       - name: Build
-        run: go build ./discord-bot
+        run: cd ./discord-bot && go build
 
   test:
     runs-on: ubuntu-latest
