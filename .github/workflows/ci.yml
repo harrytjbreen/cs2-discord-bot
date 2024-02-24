@@ -99,7 +99,7 @@ jobs:
 
   apply:
     runs-on: ubuntu-latest
-    needs: [ plan, workflow.discord-bot.deploy ]
+    needs: [ plan, deploy-bot ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
