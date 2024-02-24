@@ -33,6 +33,10 @@ jobs:
       - name: Install dependencies
         run: go mod download
 
+      # Mod download doesn't download the actual package, so we need to do it manually
+      - name: Explicitly download Discord
+        run: go get github.com/bwmarrin/discordgo@v0.27.1
+
       - name: Build
         run: go build
 
