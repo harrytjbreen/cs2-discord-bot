@@ -75,7 +75,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: test
+    needs: dockerise
     defaults:
       run:
         working-directory: ./discord-bot
