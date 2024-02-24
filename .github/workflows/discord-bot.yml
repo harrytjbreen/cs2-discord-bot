@@ -39,14 +39,12 @@ jobs:
 
       - name: Build
         run: go build
-        working-directory: .
-        continue-on-error: false
-        if: success()
-        # Archive the built executable
+
+      - name: Archive built artifact
         uses: actions/upload-artifact@v2
         with:
           name: discord-bot
-          path: discord-bot
+          path: ./discord-bot
 
   test:
     runs-on: ubuntu-latest
