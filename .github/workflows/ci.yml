@@ -9,14 +9,105 @@ on:
       - master
 
 jobs:
-  terraform:
-    uses: ./.github/workflows/terraform.yml
+  build-bot:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./discord-bot
 
-  build_bot:
-    uses: ./.github/workflows/build-bot.yml
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-  dockerise_bot:
-    uses: ./.github/workflows/dockerise-bot.yml
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.22.0'
+      - name: Install dependencies
+        run: go mod download
 
-  deploy_bot:
-    uses: ./.github/workflows/deploy-bot.yml
+      # Mod download doesn't download the actual package, so we need to do it manually
+      - name: Explicitly download Discord
+        run: go get github.com/bwmarrin/discordgo@v0.27.1
+
+      - name: Build
+        run: go build
+
+      - name: Archive built artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: discord-bot
+          path: ./discord-bot
+
+  dockerise-bot:
+    runs-on: ubuntu-latest
+    needs: build-bot
+    defaults:
+      run:
+        working-directory: ./discord-bot
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t discord-bot .
+
+      - name: Archive Docker image
+        uses: actions/upload-artifact@v2
+        with:
+          name: image
+          path: ./discord-bot
+
+  deploy-bot:
+    runs-on: ubuntu-latest
+    needs: dockerise-bot
+    defaults:
+      run:
+        working-directory: ./discord-bot
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push' && success()
+
+    steps:
+
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: image
+          path: ./discord-bot
+
+      - name: Push Docker image
+        run: echo "Unimplemented docker push step."
+
+      - name: Deploy to Production
+        run: echo "Unimplemented deployment step."
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.0
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan
+
+  apply:
+    runs-on: ubuntu-latest
+    needs: [ plan, workflow.discord-bot.deploy ]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.0
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
