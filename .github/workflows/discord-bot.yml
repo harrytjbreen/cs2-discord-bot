@@ -15,7 +15,6 @@ on:
       - '.github/workflows/discord-bot.yml'
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     defaults:
@@ -46,6 +45,26 @@ jobs:
           name: discord-bot
           path: ./discord-bot
 
+  dockerise:
+    runs-on: ubuntu-latest
+    needs: build
+    defaults:
+      run:
+        working-directory: ./discord-bot
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t discord-bot .
+
+      - name: Archive Docker image
+        uses: actions/upload-artifact@v2
+        with:
+          name: image
+          path: ./discord-bot
+
   test:
     runs-on: ubuntu-latest
     needs: build
@@ -67,10 +86,11 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
-          name: discord-bot
+          name: image
           path: ./discord-bot
+
+      - name: Push Docker image
+        run: echo "Unimplemented docker push step."
 
       - name: Deploy to Production
         run: echo "Unimplemented deployment step."
-
-
