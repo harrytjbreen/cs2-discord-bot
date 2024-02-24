@@ -37,7 +37,7 @@ jobs:
         run: npm run build
 
       - name: Copy build files
-        run: cp -r ./build ../dist
+        run: cp -r . ../dist
 
   test:
     runs-on: ubuntu-latest
