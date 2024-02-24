@@ -13,13 +13,14 @@ on:
     paths:
       - 'game-coordinator/**'
       - '.github/workflows/game-coordinator.yml'
+
+defaults:
+  run:
+    working-directory: ./game-coordinator
+
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ./game-coordinator
 
     steps:
       - name: Checkout code

@@ -13,13 +13,14 @@ on:
     paths:
       - 'discord-bot/**'
       - '.github/workflows/discord-bot.yml'
+      -
+defaults:
+  run:
+    working-directory: ./discord-bot
+
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ./discord-bot
 
     steps:
       - name: Checkout code
