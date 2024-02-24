@@ -16,11 +16,23 @@ on:
 
 
 jobs:
+  setup: &setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
   build:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./game-coordinator
+
+    <<: *setup
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -47,8 +59,8 @@ jobs:
     needs: build
     if: success()
 
+    <<: *setup
     steps:
-
       - name: Test
         run: npm run test
 
@@ -60,6 +72,7 @@ jobs:
     needs: test
     if: github.ref == 'refs/heads/master' && github.event_name == 'push' && success()
 
+    <<: *setup
     steps:
       - name: Set up Node.js
         uses: actions/setup-node@v4
