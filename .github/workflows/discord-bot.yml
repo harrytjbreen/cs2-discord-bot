@@ -16,7 +16,7 @@ on:
       -
 defaults:
   run:
-    working-directory: ./discord-bot
+    working-directory: discord-bot
 
 jobs:
   build:

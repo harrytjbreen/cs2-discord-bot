@@ -16,7 +16,7 @@ on:
 
 defaults:
   run:
-    working-directory: ./game-coordinator
+    working-directory: game-coordinator
 
 jobs:
   build:
