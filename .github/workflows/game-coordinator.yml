@@ -45,7 +45,6 @@ jobs:
       run:
         working-directory: ./game-coordinator
     needs: build
-    working-directory: ./game-coordinator
     if: success()
 
     steps:
