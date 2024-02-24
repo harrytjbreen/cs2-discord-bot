@@ -25,7 +25,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Go
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -35,6 +35,9 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Copy build files
+        run: cp -r ./build ../dist
 
   test:
     runs-on: ubuntu-latest
@@ -51,7 +54,12 @@ jobs:
     if: github.ref == 'refs/heads/master' && github.event_name == 'push' && success()
 
     steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Deploy to Production
         run: echo "Unimplemented deployment step."
 
-
+```
