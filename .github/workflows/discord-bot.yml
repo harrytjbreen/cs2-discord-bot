@@ -15,7 +15,7 @@ on:
       - '.github/workflows/discord-bot.yml'
 
 jobs:
-  build:
+  build-bot:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -45,9 +45,9 @@ jobs:
           name: discord-bot
           path: ./discord-bot
 
-  dockerise:
+  dockerise-bot:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-bot
     defaults:
       run:
         working-directory: ./discord-bot
@@ -65,9 +65,9 @@ jobs:
           name: image
           path: ./discord-bot
 
-  deploy:
+  deploy-bot:
     runs-on: ubuntu-latest
-    needs: dockerise
+    needs: dockerise-bot
     defaults:
       run:
         working-directory: ./discord-bot

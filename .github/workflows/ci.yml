@@ -1,0 +1,22 @@
+name: Main Workflow
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  terraform:
+    uses: ./.github/workflows/terraform.yml
+
+  build_bot:
+    uses: ./.github/workflows/build-bot.yml
+
+  dockerise_bot:
+    uses: ./.github/workflows/dockerise-bot.yml
+
+  deploy_bot:
+    uses: ./.github/workflows/deploy-bot.yml
