@@ -83,7 +83,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-      working-directory: ./infra
+        working-directory: ./infra
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -104,7 +104,7 @@ jobs:
     needs: [ plan, deploy-bot ]
     defaults:
       run:
-      working-directory: ./infra
+        working-directory: ./infra
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
