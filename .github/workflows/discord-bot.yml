@@ -4,14 +4,18 @@ on:
   pull_request:
     branches:
       - master
+    paths:
+      - 'discord-bot/**'
+      - '.github/workflows/discord-bot.yml'
   push:
     branches:
       - master
-
+    paths:
+      - 'discord-bot/**'
+      - '.github/workflows/discord-bot.yml'
 jobs:
   build:
     runs-on: ubuntu-latest
-    id: bot-build
 
     defaults:
       run:
@@ -34,7 +38,6 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    id: bot-test
     needs: build
     if: success()
 
@@ -44,7 +47,6 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    id: bot-deploy
     needs: test
     if: github.ref == 'refs/heads/master' && github.event_name == 'push' && success()
 

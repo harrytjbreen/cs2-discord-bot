@@ -1,17 +1,21 @@
-name: discord-bot
+name: game-coordinator
 
 on:
   pull_request:
     branches:
       - master
+    paths:
+      - 'game-coordinator/**'
+      - '.github/workflows/game-coordinator.yml'
   push:
     branches:
       - master
-
+    paths:
+      - 'game-coordinator/**'
+      - '.github/workflows/game-coordinator.yml'
 jobs:
   build:
     runs-on: ubuntu-latest
-    id: gc-build
 
     defaults:
       run:
@@ -34,7 +38,6 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    id: gc-test
     needs: build
     if: success()
 
@@ -44,7 +47,6 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    id: gc-deploy
     needs: test
     if: github.ref == 'refs/heads/master' && github.event_name == 'push' && success()
 
