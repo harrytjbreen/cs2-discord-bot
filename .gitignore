@@ -57,3 +57,4 @@ terraform.rc
 # Go workspace file
 go.work
 
+/discord-bot/.env

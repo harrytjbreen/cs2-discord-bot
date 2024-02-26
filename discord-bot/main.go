@@ -2,6 +2,7 @@ package main
 
 import (
 	"discord-bot/handlers"
+	"discord-bot/util"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"os"
@@ -19,7 +20,10 @@ var commandHandlers = map[string]CommandHandler{
 }
 
 func initialise() func() {
-	dg, err := discordgo.New("Bot YOUR_TOKEN_HERE")
+
+	token := util.GetEnvVar("DISCORD_TOKEN")
+
+	dg, err := discordgo.New("Bot " + token)
 	if err != nil {
 		fmt.Println("Error creating Discord session:", err)
 		return nil
@@ -63,6 +67,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		response := handler(words)
 
 		if response != "" {
+			fmt.Println("Sending message:", response)
 			_, err := s.ChannelMessageSend(m.ChannelID, response)
 			if err != nil {
 				fmt.Println("Error sending message:", err)
